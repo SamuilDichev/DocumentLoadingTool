@@ -3,7 +3,7 @@
 Ivy used instead of Maven for dependencies.   
 Logback used for logging.  
   
-DocumentLoadingTool/  
+DocumentLoadingTool folder structure:  
 - src/  
   - models/Employee.java - POJO for employee data.  
   - util/Config.java - helper for loading configuration options from main.conf  
