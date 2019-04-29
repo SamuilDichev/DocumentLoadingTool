@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 
 /**
+ * Loads configuration values from the configuration file on the classpath.
+ *
  * @author Samuil Dichev
  */
 public class Config {
@@ -24,8 +26,7 @@ public class Config {
   }
 
   public String getProperty(String key) {
-    String value = this.configFile.getProperty(key);
-    return value;
+    return this.configFile.getProperty(key);
   }
 
   public static Config getInstance() {

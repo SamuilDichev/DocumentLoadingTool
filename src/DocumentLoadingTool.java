@@ -28,6 +28,7 @@ public class DocumentLoadingTool {
       docs.add(EntityDocument.create(e));
     }
 
+    // Check if above the configured bulk insertion threshold and start the appropriate insertion type.
     DocumentHelper<Employee> tool = new DocumentHelper<>();
     if ((docs.size() >= Integer.parseInt(Config.getInstance().getProperty("db.bulk.threshold")))) {
       tool.bulkInsert(docs, "default");
@@ -36,6 +37,11 @@ public class DocumentLoadingTool {
     }
   }
 
+  /**
+   * Takes input from the user. Repeats on wrong input.
+   *
+   * @return the number of documents that should be randomly generated and inserted into the DB.
+   */
   private static int takeInput() {
     Scanner in = new Scanner(System.in);
     System.out.print("Enter number of documents to generate: ");

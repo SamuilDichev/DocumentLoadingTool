@@ -4,6 +4,8 @@ import com.couchbase.client.java.repository.annotation.Field;
 import com.couchbase.client.java.repository.annotation.Id;
 
 /**
+ * A model for an Employee, used to store data.
+ *
  * @author Samuil Dichev
  */
 public class Employee {

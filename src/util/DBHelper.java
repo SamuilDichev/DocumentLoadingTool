@@ -4,6 +4,9 @@ import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
 
 /**
+ * Establishes a connection to the database and maintains a
+ * static instance of the cluster for use throughout the application.
+ *
  * @author Samuil Dichev
  */
 public class DBHelper {

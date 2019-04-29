@@ -11,12 +11,21 @@ import rx.functions.Func1;
 import java.util.List;
 
 /**
+ * Inserts {@link EntityDocument} into a given bucket
+ *
  * @author Samuil Dichev
  */
 public class DocumentHelper<T> {
   private static final Logger LOGGER = LoggerFactory.getLogger(DocumentHelper.class);
 
+  /**
+   * Attempts to asynchronously insert documents
+   *
+   * @param docs A list of documents
+   * @param bucketName The bucket where the docs should be inserted
+   */
   public void bulkInsert(List<EntityDocument<T>> docs, String bucketName) {
+    // Open a connection to the bucket
     Bucket bucket = DBHelper.getInstance().getCluster().openBucket(bucketName);
 
     Observable<EntityDocument<T>> bulkOp = Observable.from(docs)
@@ -28,6 +37,8 @@ public class DocumentHelper<T> {
               }
             });
 
+    // Attempt to stop backpressure problems as described in
+    // https://docs.couchbase.com/java-sdk/2.7/async-programming.html
     Subscriber<EntityDocument<T>> sub = new Subscriber<EntityDocument<T>>() {
       @Override
       public void onCompleted() {
@@ -54,6 +65,12 @@ public class DocumentHelper<T> {
     bulkOp.last().toBlocking().single();
   }
 
+  /**
+   * Inserts documents one-by-one (synchronously)
+   *
+   * @param docs A list of documents
+   * @param bucketName The bucket where the docs should be inserted
+   */
   public void insert(List<EntityDocument<T>> docs, String bucketName) {
     Bucket bucket = DBHelper.getInstance().getCluster().openBucket(bucketName);
 
