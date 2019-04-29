@@ -8,7 +8,7 @@ DocumentLoadingTool folder structure:
   - models/Employee.java - POJO for employee data.  
   - util/Config.java - helper for loading configuration options from main.conf  
   - util/DBHelper.java - establishes connection to the database  
-  - util/DocumentHelper.java - fascilitations document insertion  
+  - util/DocumentHelper.java - fascilitations document insertion (synchronous and asynchronous)  
   - DocumentLoadtingTool.java - main method, application startup  
 
 - main.conf - configuration file with database credentials and document threshold above which bulk insertion is used instead of sequential  
