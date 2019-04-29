@@ -1,42 +1,38 @@
-import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.EntityDocument;
-import com.couchbase.client.java.document.JsonDocument;
-import com.couchbase.client.java.document.json.JsonArray;
-import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.N1qlQuery;
-import com.couchbase.client.java.query.N1qlQueryResult;
-import com.couchbase.client.java.query.N1qlQueryRow;
 import models.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import util.DBHelper;
+import util.Config;
+import util.DocumentHelper;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Samuil Dichev
  */
-public class DocTool {
-  private static final Logger LOGGER = LoggerFactory.getLogger(DocTool.class);
+public class DocumentLoadingTool {
+  private static final Logger LOGGER = LoggerFactory.getLogger(DocumentLoadingTool.class);
 
   public static void main(String[] args) throws Exception {
     // Take input from user
     int docNum = takeInput();
 
-    // Initialize the Connection
-    Bucket bucket = DBHelper.getInstance().getCluster().openBucket("default");
-
     // Generate docs
+    List<EntityDocument<Employee>> docs = new ArrayList<>();
     for (int i = 0; i < docNum; i++) {
       Employee e = new Employee(UUID.randomUUID().toString());
       e.setName(Integer.toString(i));
       e.setEmail(e.getName() + "@gmail.com");
       e.setJobTitle("Random Job Title");
 
-      EntityDocument<Employee> doc = EntityDocument.create(e.getId(), e);
-      bucket.repository().upsert(doc);
+      docs.add(EntityDocument.create(e));
+    }
+
+    DocumentHelper<Employee> tool = new DocumentHelper<>();
+    if ((docs.size() >= Integer.parseInt(Config.getInstance().getProperty("db.bulk.threshold")))) {
+      tool.bulkInsert(docs, "default");
+    } else {
+      tool.insert(docs, "default");
     }
   }
 
