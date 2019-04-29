@@ -3,6 +3,7 @@ import models.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Config;
+import util.DBHelper;
 import util.DocumentHelper;
 
 import java.util.*;
@@ -35,6 +36,8 @@ public class DocumentLoadingTool {
     } else {
       tool.insert(docs, "default");
     }
+
+    DBHelper.getInstance().getCluster().disconnect();
   }
 
   /**
